@@ -33,96 +33,35 @@ public:
 class BoardVector : public Board {
 public:
 
-	BoardVector(std::pair<int, int> dimensions) {
-		if (dimensions.first < 0 || dimensions.second < 0) {
-			throw std::invalid_argument("");
-		}
-		board_.resize(dimensions.first);
-		for (std::vector<Mark>& row : board_) {
-			row.resize(dimensions.second, Mark::EMPTY);
-		}
-	}
+	BoardVector(std::pair<int, int> dimensions);
 
 	BoardVector() : BoardVector({ 3, 3 }) {}
 
 	// Returns 'true' if successful
-	bool Insert(std::pair<int, int> coord, Mark mark) override {
-		if (!CheckOutOfBounds(coord) && !CheckOccupied(coord)) {
-			board_[coord.first][coord.second] = mark;
-			return true;
-		}
-		return false;
-	}
+	bool Insert(std::pair<int, int> coord, Mark mark) override;
 
-	bool ForceInsert(std::pair<int, int> coord, Mark mark) override {
-		if (!CheckOutOfBounds(coord)) {
-			board_[coord.first][coord.second] = mark;
-			return true;
-		}
-		return false;
-	}
+	bool ForceInsert(std::pair<int, int> coord, Mark mark) override;
 
-	bool Erase(std::pair<int, int> coord) override {
-		if (!CheckOutOfBounds(coord)) {
-			board_[coord.first][coord.second] = Mark::EMPTY;
-			return true;
-		}
-		return false;
-	}
+	bool Erase(std::pair<int, int> coord) override;
 
-	Mark LookUp(std::pair<int, int> coord) const override {
-		if (!CheckOutOfBounds(coord)) {
-			return board_[coord.first][coord.second];
-		}
-		return Mark::EMPTY;
-	}
+	Mark LookUp(std::pair<int, int> coord) const override;
 
-	void SetAllTiles(Mark mark) override {
-		for (std::vector<Mark>& row : board_) {
-			for (Mark& current_mark : row) {
-				current_mark = mark;
-			}
-		}
-	}
+	void SetAllTiles(Mark mark) override;
 
-	void ClearBoard() override {
-		this->SetAllTiles(Mark::EMPTY);
-	}
+	void ClearBoard() override;
 
-	int GetFreeTilesCount() const override {
-		int output = 0;
-		for (const std::vector<Mark>& row : board_) {
-			for (const Mark& current_mark : row) {
-				output += (current_mark == Mark::EMPTY) ? 1 : 0;
-			}
-		}
-		return output;
-	}
+	int GetFreeTilesCount() const override;
 
-	std::pair<int, int> GetDimensions() const override {
-		return dimensions_;
-	}
+	std::pair<int, int> GetDimensions() const override;
 
 private:
 	std::vector<std::vector<Mark>> board_;
 	std::pair<int, int> dimensions_;
 
-	[[nodiscard]] bool CheckOutOfBounds(std::pair<int, int> coord) const {
-		if (coord.first >= 0 && coord.first < dimensions_.first) {
-			if (coord.second >= 0 && coord.second < dimensions_.second) {
-				return false;
-			}
-		}
-		return true;
-	}
+	[[nodiscard]] bool CheckOutOfBounds(std::pair<int, int> coord) const;
 
 	// Must not be out of bounds
-	[[nodiscard]] bool CheckOccupied(std::pair<int, int> coord) const {
-		if (board_[coord.first][coord.second] == Mark::EMPTY) {
-			return false;
-		}
-		return true;
-	}
+	[[nodiscard]] bool CheckOccupied(std::pair<int, int> coord) const;
 };
 
 class BoardBitset : public Board {
