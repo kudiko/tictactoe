@@ -28,6 +28,8 @@ public:
 
 	virtual std::pair<int, int> GetDimensions() const = 0;
 
+	virtual ~Board() = default;
+
 };
 
 class BoardVector : public Board {
@@ -53,6 +55,8 @@ public:
 	int GetFreeTilesCount() const override;
 
 	std::pair<int, int> GetDimensions() const override;
+
+	virtual ~BoardVector() = default;
 
 private:
 	std::vector<std::vector<Mark>> board_;
